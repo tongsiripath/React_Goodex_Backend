@@ -1,0 +1,4 @@
+mkdir backend
+cd backend
+npm init -y
+npm install -D express mysql cors nodemon cookie-parser jsonwebtoken bcrypt express-session multer path dotenv
