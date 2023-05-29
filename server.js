@@ -8,6 +8,9 @@ import cookieParser from "cookie-parser";
 //*** Import Routes ***/
 import authRoutes from "./routes/auth.js";
 import navLinksRoutes from "./routes/navlinks.js";
+import navSubLinksRoutes from "./routes/navsublinks.js";
+import productsRoutes from "./routes/products.js";
+import categoryRoutes from "./routes/category.js";
 
 
 const app = express();
@@ -18,6 +21,10 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/navlinks", navLinksRoutes);
+app.use("/api/navsublinks", navSubLinksRoutes);
+app.use("/api/products", productsRoutes);
+app.use("/api/category", categoryRoutes);
+
 
 
 app.listen(8081, () => {
