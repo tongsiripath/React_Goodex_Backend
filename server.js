@@ -5,6 +5,8 @@ import bcrypt from "bcrypt";
 import cookieParser from "cookie-parser";
 
 
+
+
 //*** Import Routes ***/
 import authRoutes from "./routes/auth.js";
 import navLinksRoutes from "./routes/navlinks.js";
@@ -24,6 +26,7 @@ app.use("/api/navlinks", navLinksRoutes);
 app.use("/api/navsublinks", navSubLinksRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/api/category", categoryRoutes);
+
 
 
 
