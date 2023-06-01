@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(cors({    
-    origin: ["https://api-goodex.onrender.com"],
+    origin: ["http://tongsiripath.mypressonline.com"],
     methods: ["POST","GET"],
     credentials: true
 }));
