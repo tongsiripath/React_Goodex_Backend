@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import bcrypt from "bcrypt";
 import cookieParser from "cookie-parser";
 
 
@@ -15,14 +14,16 @@ import categoryRoutes from "./routes/category.js";
 
 
 const app = express();
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Credentials", true);
-    next();
-});
+
+// app.use((req, res, next) => {
+//     res.header("Access-Control-Allow-Credentials", true);
+//     next();
+// });
 
 app.use(express.json());
 app.use(cors({    
     origin: ["http://tongsiripath.mypressonline.com"],
+    //origin: ["http://localhost:5173"],    
     methods: ["POST","GET"],
     credentials: true
 }));
@@ -41,3 +42,5 @@ app.use("/api/category", categoryRoutes);
 app.listen(8081, () => {
     console.log("Connected API กำลังรันที่พอร์ท 8081..");
 });
+
+//origin: ["http://tongsiripath.mypressonline.com"],
