@@ -1,6 +1,6 @@
-import { response } from "express";
 import { db } from "../db.js";
-import bcrypt, { hash } from "bcrypt";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 const salt = 10;
 
 export const register = (req, res) => {
@@ -27,6 +27,10 @@ export const login = (req, res) => {
             bcrypt.compare(req.body.password.toString(), data[0].password, (err,response) => {
                 if(err) return res.json({Error: "Password compare error"});
                 if(response){
+                    const name = data[0].name;
+                    const token = jwt.sign({name}, "jwt-secret-key", {expiresIn: "1d"});
+                    res.cookie("token", token);
+                    
                     return res.json({Status: "เข้าสู่ระบบสำเร็จ"});
                 }else{
                     return res.json({Error: "รหัสผ่านไม่ถูกต้อง"});
@@ -39,13 +43,32 @@ export const login = (req, res) => {
 };
 
 export const logout = (req, res) => {
-    const q = "SELECT * FROM users WHERE email = ?"
+    res.clearCookie("token");
+    return res.json({Status: "ผู้ใช้ออกจากระบบแล้ว"});
 };
 
-export const users = (req, res) => {
-    const sql = "SELECT * FROM tbl_users";
-    db.query(sql,(err,result)=>{
-        if(err) return res.json({Error:"การเรียกข้อมูล User มีปัญหา"});
-        return res.json(result);
-    });    
+export const verifyUser = (req, res, next) => {
+    const token = req.cookies.token;
+    //const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVG9uZ2RhbyIsImlhdCI6MTY4NTU5NDAzMywiZXhwIjoxNjg1NjgwNDMzfQ.0E7fUWgh9Iv1fQ7uiEhalF_HAQHCtKFZ6Fk3fojLihs"
+    if(!token){
+        return res.json({Error:"คุณไม่ได้รับการรับรองความถูกต้อง"});
+    }else{
+        jwt.verify(token, "jwt-secret-key", (err, decoded) => {
+            if(err){
+                return res.json({Error:"Token ไม่โอเค"});
+            }else{
+                req.name = decoded.name;
+                next();
+            }
+        });
+    }
+};
+
+export const users =  (req, res) => {
+    // const sql = "SELECT * FROM tbl_users";
+    // db.query(sql,(err,result)=>{
+    //     if(err) return res.json({Error:"การเรียกข้อมูล User มีปัญหา"});
+    //     return res.json(result);
+    // });  
+    return res.json({Status:"เข้าสู่ระบบสำเร็จ", name: req.name});  
 };

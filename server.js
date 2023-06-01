@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import cookieParser from "cookie-parser";
 
@@ -16,8 +15,14 @@ import categoryRoutes from "./routes/category.js";
 
 
 const app = express();
+
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    //origin: ["http://localhost:5173"],
+    origin: ["https://api-goodex.onrender.com"],
+    methods: ["POST","GET"],
+    credentials: true
+}));
 app.use(cookieParser());
 
 
